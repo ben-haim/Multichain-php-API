@@ -36,9 +36,8 @@ class Route
 		if(isset(self::$_methods[$method]) && isset(self::$_methods[$method][$uri])){
 			$callback = self::$_methods[$method][$uri];
 			if(!is_callable($callback)){
-				$controller = 'controllers\\'.$callback['controller'];
+				$class = new ${!${''} = '\controllers\\'.$callback["controller"]}();
 				$callback = $callback['callback'];
-				$class = new $controller();
 			}
 			$callback($class ?? null);
 			return;

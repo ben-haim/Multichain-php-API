@@ -3,21 +3,16 @@
 namespace controllers;
 
 use \API;
-use \Controller;
 use \models\Product as Product;
-class ProductController extends Controller
-{
+class ProductController{
 	
-	function __construct()
-	{
-		
-	}
+	public function __construct(){}
 
 	function all(){
 		API::json(Product::all());
 	}
 
-	function search(array $keys){
-		API::json(Product::apiSearchLike($keys));
+	function search(){
+		API::json(Product::apiSearchLike($_POST["q"] ?? []));
 	}
 }

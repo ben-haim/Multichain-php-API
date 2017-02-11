@@ -47,7 +47,6 @@ class Model
 		foreach ($keys as $key => $values) {
 			$where = ($where ? $where.") AND (" : "WHERE (`").$key."`";
 			foreach ($values as $subKey => $value) {
-				self::$whereValues[":key".$subKey] = $value;
 				$where .= " LIKE ".Connect::getInstance()->_dbh->quote("%".$value."%")." OR ".$key;
 			}
 			$where = preg_replace("/OR ".$key."$/", "", $where);

@@ -1,26 +1,13 @@
 <?php
 
-echo $_GET["test"];
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once "classes/Autoloader.php";
+ 
+Route::get("/products/all", 'ProductController@all');
 
-Route::get("/", function(){
-	echo "Welcome to the multichain API";
-});
+Route::post("/products/search", 'ProductController@search');
 
-Route::get("/products/all", 'ProductController', function(Controller $ProductController){
-	$ProductController->all();
-});
-
-Route::post("/products/search", 'ProductController', function(Controller $ProductController){
-	$q = $_POST["q"] ?? [];
-	$ProductController->search($q);
-});
-
-Route::get('/users/create', 'ProductController', function(Controller $ProductController){
-	$ProductController->show("test");
-});
+Route::post('/users/create', 'UserController@create');
 

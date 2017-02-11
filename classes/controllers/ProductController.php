@@ -16,4 +16,8 @@ class ProductController extends Controller
 	function all(){
 		API::json(Product::all());
 	}
+
+	function search(array $keys){
+		API::json(Product::apiSearchLike($keys));
+	}
 }

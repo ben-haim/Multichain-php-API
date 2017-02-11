@@ -17,15 +17,14 @@ class API
 	}
 
 	public static function validateKey(string $key){
-		self::$_key = $key;
-
-		if (self::$_key) {
+		if ($key) {
 			$dbh = Connect::getInstance()->_dbh;
-			$q = "SELECT api FROM users WHERE api = :key";
+			$q = "SELECT api FROM supplier_users WHERE api = :key";
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(":key", self::$_key, PDO::PARAM_STR);
+			$stmt->bindParam(":key", $key, PDO::PARAM_STR);
 			$stmt->execute();
 			if ($stmt->rowCount()) {
+				self::$_key = $key;
 				return true;
 			}
 		}

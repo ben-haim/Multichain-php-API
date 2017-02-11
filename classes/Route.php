@@ -35,13 +35,12 @@ class Route
 		$method = $_SERVER["REQUEST_METHOD"];
 		if(isset(self::$_methods[$method]) && isset(self::$_methods[$method][$uri])){
 			$callback = self::$_methods[$method][$uri];
-			if(is_callable($callback)){
-				$callback();
-			}
-			else{
+			if(!is_callable($callback)){
 				$controller = 'controllers\\'.$callback['controller'];
-				$callback['callback'](new $controller());
+				$callback = $callback['callback'];
+				$class = new $controller();
 			}
+			$callback($class ?? null);
 			return;
 		}
 		API::error(404);

@@ -1,5 +1,6 @@
 <?php 
 
+
 class API
 {
 
@@ -9,8 +10,14 @@ class API
 
 	}
 
-	public static function validate(){
-		self::$_key = getallheaders()["API_KEY"] ?? false;
+	public static function validate(){		
+		if (!self::validateKey(getallheaders()["API_KEY"] ?? "")) {
+			API::error(403);
+		}
+	}
+
+	public static function validateKey(string $key){
+		self::$_key = $key;
 
 		if (self::$_key) {
 			$dbh = Connect::getInstance()->_dbh;
@@ -22,8 +29,7 @@ class API
 				return true;
 			}
 		}
-
-		API::error(403);
+		return false;
 	}
 
 	public static function json($data = []){

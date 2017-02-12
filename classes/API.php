@@ -10,18 +10,25 @@ class API
 
 	}
 
-	public static function validate(){		
-		if (!self::validateKey(getallheaders()["API_KEY"] ?? "")) {
+	private static function allowHeaders(){
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: API_KEY, Content-Type");
+	}
+
+	public static function validate(){	
+		self::allowHeaders();
+		$headers = getallheaders();
+		if (!self::validateKey($headers["API_KEY"])){
 			API::error(403);
 		}
 	}
 
-	public static function validateKey(string $key){
+	public static function validateKey(string $key): bool{
 		if ($key) {
 			$dbh = Connect::getInstance()->_dbh;
-			$q = "SELECT api FROM supplier_users WHERE api = :key";
+			$q = "SELECT api FROM users WHERE api = :key";
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(":key", $key, PDO::PARAM_STR);
+			$stmt->bindValue(":key", $key, PDO::PARAM_STR);
 			$stmt->execute();
 			if ($stmt->rowCount()) {
 				self::$_key = $key;
@@ -32,9 +39,10 @@ class API
 	}
 
 	public static function json($data = []){
-		header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
+		header("HTTP/1.0 200 Ok");
 		echo json_encode($data);
+		exit();
 	}
 
 	public static function error(int $code){

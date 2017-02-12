@@ -13,7 +13,7 @@ class Connect
 	private $_pass = "Melkpak32";
 
 	private function __construct(){
-		$this->_dbh = new PDO('mysql:host=localhost;dbname=hackathon', $this->_user, $this->_pass);
+		$this->_dbh = new PDO('mysql:host=localhost;dbname=blogchain', $this->_user, $this->_pass);
 	}
 
 	static function getInstance(): Connect{
